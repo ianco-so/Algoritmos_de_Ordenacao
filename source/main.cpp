@@ -1,125 +1,227 @@
 /*!
  * @file main.cpp
- * Benchmarking suit to compare sorting algorithms under verios situations.
- */
-
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-#include <vector>
+ * @author Ianco Soares Oliveira and Lucas Vinícius Gois Nogueira
+ * @brief Tests sorting algorithms for time complexity. Nomely,
+ * we are testing the time complexity of the following algorithms:
+ * insertion sort, selection sort, bubble sort, merge sort, quick sort, radix sort and shell sort.
+ * @date 2022-05-19
+*/
 #include <chrono>
-#include <string>
-#include <cassert>
+#include <iostream>
 #include <algorithm>
-#include <functional>
-using std::function;
+#include <array>
+#include <string>
+#include <fstream>
+#include <numeric> // std::iota
+#include <random> // std::default_random_engine
 
 #include "lib/sorting.h"
 
-//=== ALIASES
+#define MAX_ARRAY_SIZE 100000
+#define MIN_ARRAY_SIZE 100
+#define N_SAMPLES 25
+#define N_RUNS 5
+#define JUMP (MAX_ARRAY_SIZE-MIN_ARRAY_SIZE)/N_SAMPLES
 
-/// Data type we are working with.
-using value_type = long int;
-/// Size type.
-using size_type = long int;
-/// Alias for duration measure.
-using duration_t = std::chrono::duration<double>;
-
-
-//=== FUNCTION IMPLEMENTATION.
-
-/// Print time different in an humam readable form.
-void print_diff( const std::chrono::time_point<std::chrono::steady_clock> &start,
-                 const std::chrono::time_point<std::chrono::steady_clock> &end ){
-    auto diff = end - start;
-    // Milliseconds (10^-3)
-    std::cout << "\t\t>>> " << std::chrono::duration <double, std::milli> (diff).count() << " ms" << std::endl;
-    // Nanoseconds (10^-9)
-    std::cout << "\t\t>>> " << std::chrono::duration <double, std::nano> (diff).count() << " ns" << std::endl;
-    // Seconds
-    auto diff_sec = std::chrono::duration_cast<std::chrono::seconds>(diff);
-    std::cout << "\t\t>>> " << diff_sec.count() << " s" << std::endl;
+/*inline bool check_sort(unsigned int * first, unsigned int * last) {
+    for (unsigned int i = 0; i < last-first-1; ++i) if (*(first+i) > *(first+i+1)) return false;
+    return true;
+}*/
+inline void print_test() {
+}
+/*!
+ * @brief Tests the time complexity of the selection sort algorithm.
+ * @param array The array to be sorted.
+ * @param size The size of the array.
+ * @return The time complexity of the selection sort algorithm.
+*/
+inline double test_selection_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::selection_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
+}
+/*!
+ * @brief Tests the bubble sort algorithm.
+ * @param first The first element of the array.
+ * @param last The last element of the array.
+ * @return The time of the bubble sort algorithm.
+*/
+inline double test_bubble_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::bubble_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
+}
+/*! 
+ * @brief Tests the insertion sort algorithm.
+ * @param first The first element of the array.
+ * @param last The last element of the array.
+ * @return The time it took to sort the array.
+*/
+inline double test_inserction_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::insertion_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
+}
+/*! @brief Tests the merge sort algorithm.
+ * @param first The first element of the array.
+ * @param last The last element of the array.
+ * @return The time it took to sort the array.
+*/
+inline double test_merge_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::merge_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
+}
+/*! @brief Tests the quick sort algorithm.
+ * @param first The first element of the array.
+ * @param last The last element of the array.
+ * @return The time it took to sort the array.
+*/
+inline double test_quick_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::quick_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
+}
+/*! @brief Tests the radix sort algorithm.
+ * @param first The first element of the array.
+ * @param last The last element of the array.
+ * @return The time it took to sort the array.
+*/
+inline double test_radix_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::radix_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
+}
+/*! @brief Tests the shell sort algorithm.
+ * @param first The first element of the array.
+ * @param last The last element of the array.
+ * @return The time it took to sort the array.
+*/
+inline double test_shell_sort (unsigned int* first, unsigned int* last) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    sort::shell_sort(first, last);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff = end - begin;
+    return std::chrono::duration <double, std::milli> (diff).count();
 }
 
-/// The running options
-struct RunningOpt{
-    size_t min_sample_sz{1000};   //!< Minimum sample size.
-    size_t max_sample_sz{100000}; //!< Maximum sample size.
-    int n_samples{25};            //!< The number of samples to collect.
-    short which_algs{1};          //!< Setting bit code that indicates which algorithm to run.
-    short which_scenarios{1};     //!< Setting bit code that indicates which scenarios to run.
-    short n_runs{5};              //!< How many runs per average.
-    short field_width{10};        //!< Width of the data field sent to the standard output
-    short precision{3};           //!< How digits in total (including point.)
-
-    /// Returns the sample size step, based on the [min,max] sample sizes and # of samples.
-    size_type sample_step(void){
-        return static_cast<float>(max_sample_sz-min_sample_sz)/(n_samples-1);
+int main (void) {
+    double average = 0.0;
+    //create array
+    std::array<unsigned int, MAX_ARRAY_SIZE> a;
+    std::ofstream fw("output.csv", std::ofstream::out);
+    if (!fw.is_open()) {
+        std::cout << "Error opening file" << std::endl;
+        return 1;
     }
-};
+    fw << "#n;";
+    for (int i = MIN_ARRAY_SIZE; i <MAX_ARRAY_SIZE; i +=JUMP) {
+        fw << i << ";";
+    }
+    fw << "\n";
 
-/// Comparison function for the test experiment.
-constexpr bool compare( const int&a, const int &b ){
-    return ( a < b );
-}
+    /*
 
-//=== CONSTANT DEFINITIONS.
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //===========================================================SCENARIO 1: increasing order===============================================================================
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-//=== The main function, entry point.
-int main( int argc, char * argv[] ){
-    // TODO: Process any command line arguments.
-    RunningOpt run_opt;
-    // Change/update running options here, before the experiment begins.
 
-    // FOR EACH DATA SCENARIO DO...
-    while(not dataset.has_ended()){
-        // Open the output file for this dataset sceneario.
-        // TODO...
 
-        // Mark it as the first time through, so we can send out the header before the data lines.
-        bool printed_header{false};
-        // Sample step defines the increase in size for each new array to sort (sample).
-        size_type sample_step{run_opt.sample_step()};
-        // Collect data in a linear (arithmetic) scale.
-        // FOR EACH SAMPLE SIZE DO...
-        for ( auto ns{0} ; ns < run_opt.n_samples ; ++ns ){
-            // FOR EACH SORTING ALGORITHM DO...
-            // Select the first sorting algorithm.
-            while ( not sort_algs.has_ended() ){
-                // Run each algorithm N_RUN times and calculate a sample avarage for each dependent variable.
-                // FOR EACH RUN DO...This is necessary to reduce any measurement noise.
-                for( auto ct_run(0) ; ct_run < run_opt.n_runs; ++ct_run ) {
-                    // Reset timer
-                    auto start = std::chrono::steady_clock::now();
-                    //================================================================================
-                    sorting(dataset.begin_data(), dataset.end_data(), compare);
-                    //================================================================================
-                    auto end = std::chrono::steady_clock::now();
-                    // How long did it take?
-                    auto diff( end - start );
-                    // -------------------------------------------------------------------------------
-                    // Calculating a running (repeatedly updated) sample average.
-                    // Updating elapsed time sample mean.
-                    elapsed_time_mean = elapsed_time_mean + (  diff - elapsed_time_mean ) / static_cast<double>(ct_run+1);
-                } // Loop all runs for a single sample size.
-            } // Loop through all algorithms activated.
-            // DATA COLLECTION FOR THIS SAMPLE SIZE (ROW) ENDS HERE.
-            // If this is the first time, we must first print the header.
-            if ( not printed_header ){
-                // Print header here
-                printed_header=true;
-            }
-            // Send out data line to the output file.
-            out_file << data_line.str() << '\n';
-            // Reset dataline for the next row (sample size).
-            data_line.str("");
-        } // Loop through each sample size required.
-        // Go to the next active scenario.
-        dataset.next();
-        // Close the file corresponding to this dataset.
-        out_file.close();
-    } // Loop data scenarios.
+    std::iota(a.begin(), a.end(), 0);
+    fw << "#SE;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_selection_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw << average << ";";
+    }
+    fw << "\n";
 
-    return EXIT_SUCCESS;
+    //=====================================================================================================================================================================
+
+    std::iota(a.begin(), a.end(), 0);
+    fw << "#BU;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_bubble_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw<< average << ";";
+    }
+    fw << "\n";
+
+    //=====================================================================================================================================================================
+
+    std::iota(a.begin(), a.end(), 0); //fill array with numbers from 0 to ARRAY_SIZE-1
+    fw << "#IN;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_inserction_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw << average << ";";
+    }
+    fw << "\n";
+
+    //=====================================================================================================================================================================
+
+    std::iota(a.begin(), a.end(), 0); //fill array with numbers from 0 to ARRAY_SIZE-1
+    fw << "#ME;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_merge_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw << average << ";";
+    }
+    fw << "\n";
+    */
+    //=====================================================================================================================================================================
+
+    std::iota(a.begin(), a.end(), 0); //fill array with numbers from 0 to ARRAY_SIZE-1
+    std::shuffle(a.begin(), a.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+    fw << "#QU;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_quick_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw << average << ";";
+    }
+    fw << "\n";
+
+    //=====================================================================================================================================================================
+    /*
+    std::iota(a.begin(), a.end(), 0); //fill array with numbers from 0 to ARRAY_SIZE-1
+    fw << "#RA;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_radix_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw << average << ";";
+    }
+    fw << "\n";
+
+    //=====================================================================================================================================================================
+
+    std::iota(a.begin(), a.end(), 0); //fill array with numbers from 0 to ARRAY_SIZE-1 
+    fw << "#SH;";
+    for (int i = 1; i <= N_SAMPLES; i++) {   
+        for (unsigned int j = 1; j <= N_RUNS; j++) {
+            average = average + (test_shell_sort(a.begin(), a.begin() + MIN_ARRAY_SIZE + JUMP*i) - average)/j;
+        }
+        fw << average << ";";
+    }
+    fw << "\n";
+    */
+    return 0;
 }

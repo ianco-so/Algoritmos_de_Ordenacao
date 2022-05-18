@@ -2,19 +2,19 @@
 
 Preencha os dados abaixo para identificar a autoria do trabalho.
 
-- Nome: *<insira seu nome aqui>*
-- Email: *<insira seu email aqui>*
-- Turma: *<insira sua turma aqui>*
+- Nome: *Lucas Vinícius Gois Nogueira e Ianco Soares Oliveira*
+- Email: *lucas1020111@gmail.com e ianco.so@gmail.com*
+- Turma: *T01*
 
 # Indique quais algoritmos foram implementados nos experimentos
 
-- [ ] Insertion sort
-- [ ] Selection sort
-- [ ] Bubble sort
-- [ ] Shell sort
-- [ ] Quick sort
-- [ ] Merge sort
-- [ ] Radix sort
+- [x] Insertion sort
+- [x] Selection sort
+- [x] Bubble sort
+- [x] Shell sort
+- [x] Quick sort
+- [x] Merge sort
+- [x] Radix sort
 
 # Indique quais dos cenários de dados abaixo você conseguiu simular nos experimentos
 
