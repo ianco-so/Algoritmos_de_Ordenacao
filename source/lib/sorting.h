@@ -9,6 +9,7 @@
 #define SORTING_H
 
 #define DIGITS 10
+#include <random>
 namespace { //Anonymous namespace. Not visible outside this file.
     unsigned int* find_min (unsigned int* first, unsigned int* last) {
         unsigned int* minIndex = first;
@@ -158,9 +159,12 @@ namespace sort {
      * @return void
     */
     void quick_sort(unsigned int* first, unsigned int* last) { // Recursive version
-	    
 	    if(std::distance(first, last) < 2) return;
+        //chosen a pivot at random position.
+        unsigned int* p_pivot = first+std::rand()%(last-first);
+        std::swap(*p_pivot, *(last-1));
 		auto pivot = partition(first, last, (last-1));
+
 		quick_sort(first, pivot);
 		quick_sort((pivot+1), last);
     }
