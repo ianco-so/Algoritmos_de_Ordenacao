@@ -30,8 +30,8 @@ set key top left         # Location of the keys
 set o 's1_increase.png'
 
 #set logscale y           # Use this if the curves are in different scale
-set xrange [100:1000]    # Define range of X values to consider.
-set yrange [0:0.6]        # Define range of Y values to consider
+set xrange [100:100000]    # Define range of X values to consider.
+set yrange [0:10000]        # Define range of Y values to consider
 
 plot 'output.txt' u 1:2 title 'Selection' w lp ls 1, \
     'output.txt' u 1:3 title 'Bubble' w lp ls 2, \
@@ -49,8 +49,8 @@ set title "Sorting Algorithms Running Time (Reverse Order) " font ", 32"
 set o 's2_reverse.png'
 
 #set logscale y
-set xrange [100:1000]
-set yrange [0:1.4] 
+#set xrange [100:100000]
+#set yrange [0:1.4] 
 
 plot 'output.txt' u 1:9 title 'Selection' w lp ls 1, \
      'output.txt' u 1:10 title 'Bubble' w lp ls 2, \
@@ -68,8 +68,8 @@ set title "Sorting Algorithms Running Time (At Random) " font ", 32"
 set o 's3_random.png'
 
 #set logscale y
-set xrange [100:1000]
-set yrange [0:1.6]
+set xrange [100:100000]
+set yrange [0:15000]
 
 plot 'output.txt' u 1:16 title 'Selection' w lp ls 1, \
      'output.txt' u 1:17 title 'Bubble' w lp ls 2, \
@@ -87,8 +87,8 @@ set title "Sorting Algorithms Running Time (25% Random) " font ", 32"
 set o 's4_25random.png'
 
 #set logscale y
-set xrange [100:1000]
-set yrange [0:1.2]
+#set xrange [100:1000]
+#set yrange [0:1.2]
 
 plot 'output.txt' u 1:23 title 'Selection' w lp ls 1, \
      'output.txt' u 1:24 title 'Bubble' w lp ls 2, \
@@ -106,8 +106,8 @@ set title "Sorting Algorithms Running Time (50% Random) " font ", 32"
 set o 's5_50random.png'
 
 #set logscale y
-set xrange [100:1000]
-set yrange [0:1.6]
+#set xrange [100:1000]
+#set yrange [0:1.6]
 
 plot 'output.txt' u 1:30 title 'Selection' w lp ls 1, \
      'output.txt' u 1:31 title 'Bubble' w lp ls 2, \
@@ -118,15 +118,15 @@ plot 'output.txt' u 1:30 title 'Selection' w lp ls 1, \
 	'output.txt' u 1:36 title 'Shell' w lp ls 7
 
 # ==================================
-#           S5 50% RANDOM
+#           S6 75% RANDOM
 # ==================================
 
 set title "Sorting Algorithms Running Time (75% Random) " font ", 32"
 set o 's6_75random.png'
 
 #set logscale y
-set xrange [100:1000]
-set yrange [0:1.6]
+#set xrange [100:1000]
+#set yrange [0:1.6]
 
 plot 'output.txt' u 1:37 title 'Selection' w lp ls 1, \
      'output.txt' u 1:38 title 'Bubble' w lp ls 2, \

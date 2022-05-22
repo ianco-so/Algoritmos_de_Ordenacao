@@ -188,12 +188,11 @@ namespace sort {
     void shell_sort(unsigned int* first, unsigned int* last) { 
         unsigned int size = last-first;
         for (unsigned int gap = size/2; gap > 0; gap /= 2) { 
-            for (unsigned int i = gap; i < size; i += 1) { 
+            for (unsigned int i = gap; i < size; i ++) { 
                 //sort sub lists created by applying gap 
                 unsigned int temp = *(first+i);; 
                 unsigned int j; 
                 for (j = i; j >= gap && *(first+j-gap) > temp; j -= gap) *(first+j) = *(first+j-gap);
-               
                 *(first+j) = temp; 
             } 
         } 

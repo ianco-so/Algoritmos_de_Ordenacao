@@ -19,7 +19,7 @@
 
 #define N_SCENARIOS 6
 #define N_ALGORITHMS 7
-#define MAX_ARRAY_SIZE 1000
+#define MAX_ARRAY_SIZE 100000
 #define MIN_ARRAY_SIZE 100
 #define N_SAMPLES 25
 #define N_RUNS 5
